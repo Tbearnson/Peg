@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="styles.css">
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.13.1/lodash.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+	<script src="http://d3js.org/topojson.v1.min.js"></script>
+	<script src="http://d3js.org/d3.geo.projection.v0.min.js"></script>
+</head>
+<body>
+
+	<div class="row text-center">
+		<div class="col-xs-4">
+			<div class="chart-info">
+				<h3>Future Portfolio Value</h3>
+				<hr>
+				<p>Global 3Y Compounded</p>
+				<p>Risk Adjusted Incremental</p>
+				<p>Revenue: 3YP</p>
+			</div>
+		</div>
+		<div class="col-xs-4">
+			<div id="chart-gauge-1" class="chart-gauge"></div>
+		</div>
+		<div class="col-xs-4">
+			<div id="chart-gauge-2" class="chart-gauge"></div>
+		</div>
+		<!-- <div id="chart-gauge-3" class="chart-gauge"></div> -->
+	</div>
+
+	<div>
+		<div id="map"></div>
+		<div id="trend"></div>
+	</div>
+
+	<script type="text/javascript" src="domo.js"></script>
+	<script type="text/javascript" src="components/AppData.js"></script>
+	<script type="text/javascript" src="components/Needle.js"></script>
+	<script type="text/javascript" src="components/Gauge.js"></script>
+	<script type="text/javascript" src="components/Map.js"></script>
+	<script type="text/javascript" src="app.js"></script>
+</body>
+</html>

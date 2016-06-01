@@ -1,0 +1,16 @@
+{
+  "name": "Pegasus Custom",
+  "version": "1.0.0",
+  "size": {
+    "width": 4,
+    "height": 2.5
+  },
+  "mapping": [
+    {
+      "dataSetId": "36705663-722a-4d81-b4e6-6631030d18f6",
+      "alias": "target_data",
+      "fields": []
+    }
+  ],
+  "id": "6b353573-7495-4752-a302-c2c30541ba35"
+}
