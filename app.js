@@ -14,6 +14,7 @@
         var the_data = new AppData(dataset);
         console.log(the_data);
 
+        var the_trend = new Trend(the_data.ytd.trends).draw();
         var the_map = new Map(the_data.month.zones).draw();
         the_data.gauges.map(function(config, index) {
             var click_handler = function() {

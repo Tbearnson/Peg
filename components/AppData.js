@@ -16,7 +16,7 @@ var AppData = function() {
 			.reduce(function(cum, new_item) {
 				return cum + new_item.Target
 			}, 0);
-		var month_zone_data = _(month_data).groupBy('Region')
+		var month_zone_data = _(month_data).groupBy('Zone')
 			.mapValues(function(value, key) {
 				return {
 					"long": value[0].Long,
@@ -41,11 +41,20 @@ var AppData = function() {
 			.reduce(function(cum, new_item) {
 				return cum + new_item.Target
 			}, 0);
-		var ytd_zone_data = _(ytd_data).groupBy('Region')
+		var ytd_zone_data = _(ytd_data).groupBy('Zone')
 			.mapValues(function(value, key) {
 				return {
 					"lat": value[0].Lat,
 					"long": value[0].Long,
+					"actual": _.sumBy(value, 'Actual'),
+					"target": _.sumBy(value, 'Target')
+				};
+			})
+			.value();
+		var ytd_trend_data = _(ytd_data).groupBy(function(item){return new Date(item.Date).getMonth();})
+			.mapValues(function(value, key) {
+				return {
+					"date": value[0].Date,
 					"actual": _.sumBy(value, 'Actual'),
 					"target": _.sumBy(value, 'Target')
 				};
@@ -66,7 +75,8 @@ var AppData = function() {
 			overall_target: ytd_target,
 			overall_percent: ytd_actual / ytd_target,
 			overall_labels: label_percentages.map(function(item){return item * ytd_target;}).map(function(item){return item.toFixed(1);}),
-			zones: ytd_zone_data
+			zones: ytd_zone_data,
+			trends: ytd_trend_data
 		};
 		this.gauges = [
 			{

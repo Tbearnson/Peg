@@ -1,6 +1,13 @@
 html {
   font-family: 'Open Sans', sans-serif;
 }
+img {
+  position: absolute;
+  left: 78px;
+  top: 75px;
+  width: 200px;
+  height: auto;
+}
 .chart-info {
   display: block;
   text-align: center;
@@ -48,4 +55,24 @@ html {
 .needle,
 .needle-center {
   fill: #464A4F;
+}
+
+
+
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
 }
