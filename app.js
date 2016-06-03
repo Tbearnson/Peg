@@ -31,7 +31,6 @@ var dataset = [{"Date":"2016-01-02","Zone":"NAZ","Actual":130,"Target":125,"Lat"
 var the_data = new AppData(dataset);
 console.log(the_data);
 
-var the_trend = new Trend(the_data.ytd.trends).draw();
 var the_map = new Map(the_data.month.zones).draw();
 the_data.gauges.map(function(config, index) {
     var click_handler = function() {
@@ -40,3 +39,4 @@ the_data.gauges.map(function(config, index) {
     };
     new Gauge(config, index, click_handler).draw();
 });
+var the_trend = new Trend(the_data.ytd.trends).draw();

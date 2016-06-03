@@ -8,52 +8,107 @@ Trend = function() {
 
 		console.log(self.trend_data);
 
+		function symbol() {
+            return d3.svg.symbol()
+                     .size(81)
+                     .type("diamond");
+        }
+
 		var el = d3.select('#trend');
-		var width = el[0][0].offsetWidth;
-		var height = el[0][0].offsetHeight;
+		var containerWidth = el[0][0].offsetWidth;
+		var containerHeight = el[0][0].offsetHeight;
+		var margin = {top: 80, right: 140, bottom: 50, left: 50};
+        var width = containerWidth - margin.left - margin.right;
+        var height = containerHeight - margin.top - margin.bottom;
 		
-		var trend = el.append('svg')
-			.datum(self.trend_data)
-			.attr('width', width-20)
-			.attr('height', height-20)
-			.attr("transform", "translate(" + 20 + "," + 20 + ")");;
+		var svg = el.append('svg')
+			.attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+          	.append("g")
+            .attr("transform", "translate(" + margin.left +
+                  "," + margin.top + ")");
 
-		var x = d3.time.scale()
-			.range([0,width]);
-		var xAxis = d3.svg.axis()
-			.scale(x)
-			.orient("bottom");
 
-		var y = d3.scale.linear()
-			.range([0,height]);
-		var yAxis = d3.svg.axis()
-			.scale(y)
-			.orient("left")
-			.tickSize(10, 0)
+    	var x = d3.time.scale()
+            .range([0, width]);
+
+        var y = d3.scale.linear()
+            .range([height, 0]);
+
+        x.domain(d3.extent(self.trend_data, function(d) { return new Date(d.date); }));
+		y.domain([0, _.maxBy(self.trend_data, 'actual').actual]);
+
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .tickSize(0, 0, 0)
+            .tickPadding(10)
+            .tickFormat(d3.time.format("%b"))
+            .orient("bottom");
+
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .tickSize(-width, 0, 0)
+            .tickPadding(10)
+            .orient("left");
 
 		var line = d3.svg.line()
-			.defined(function(d) { return d; })
+			// .defined(function(d) { return d; })
 			.x(function(d) { return x(new Date(d.date));})
 			.y(function(d) { return y(d.actual); });
 
-		var gX = trend.append("g")
-			.attr("class", "axis axis--x")
-			.attr("transform", "translate(0," + 250 + ")");
+		svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis);
 
-		var gY = trend.append("g")
-			.attr("class", "axis axis--y");
+        // For the y-axis, we add a label.
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+          .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 9)
+            .attr("dy", ".71em")
+            .attr("text-anchor", "end")
+            .text("Temperature (°C)");
 
-		console.log(_.maxBy(self.trend_data, 'actual').actual);
-		x.domain(d3.extent(self.trend_data, function(d) { return new Date(d.date); }));
-		y.domain([0, _.maxBy(self.trend_data, 'actual').actual]);
+        // Style the axes. As with other styles, these
+        // could be more easily defined in CSS. For this
+        // particular code, though, we're avoiding CSS
+        // to make it easy to extract the resulting SVG
+        // and paste it into a presentation.
+        svg.selectAll(".axis line, .axis path")
+            .attr("fill", "none")
+            .attr("stroke", "#bbbbbb")
+            .attr("stroke-width", "2px")
+            .attr("shape-rendering", "crispEdges");
 
-		gX.call(xAxis);
-		gY.call(yAxis);
+        svg.selectAll(".axis text")
+            .attr("font-size", "14");
 
-		trend.append("path")
-			.datum(self.trend_data)
-			.attr("class", "line")
-			.attr("d", line);
+        svg.selectAll(".axis .tick line")
+            .attr("stroke", "#d0d0d0")
+            .attr("stroke-width", "1");
+
+        svg.selectAll(".point.dataset")
+            .data(self.trend_data)
+            .enter().append("path")
+            .attr("class", "point dataset")
+            .attr("fill", "#adadad")
+            .attr("stroke", "#adadad")
+            .attr("d", symbol())
+            .attr("transform", function(d) {
+                return "translate(" + x(new Date(d.date)) +
+                                  "," + y(d.actual) + ")";
+            });
+
+      	svg.append("path")
+            .datum(self.trend_data)
+            .attr("class", "line dataset")
+            .attr("fill", "none")
+            .attr("stroke", "#adadad")
+            .attr("stroke-width", "2")
+            .attr("d", line);
 
 		return self;
 	};
